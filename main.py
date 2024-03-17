@@ -21,11 +21,16 @@ def save_notes(notes):
 # Функция для фильтрации заметок по дате
 def filter_notes_by_date(notes, date):
     return [note for note in notes if note["date"] == date]
+
+
+# Консольное приложение заметок
 def main():
     notes = load_notes()
-    print("Добро пожаловать в приложение заметки")
+    print("Добро пожаловать в приложение заметки.")
+
     while True:
         command = input("Введите команду (Создать/Прочитать/Редактировать/Удалить/Фильтровать(по дате)/Выход): ")
+
         if command == "Создать":
             title = input("Введите заголовок заметки: ")
             body = input("Введите тело заметки: ")
@@ -33,6 +38,7 @@ def main():
             notes.append(note)
             save_notes(notes)
             print("Заметка успешно сохранена.")
+
         elif command == "Прочитать":
             print("ID | Заголовок | Тело | Дата и время создания")
             for note in notes:
@@ -48,5 +54,28 @@ def main():
                     save_notes(notes)
                     print("Заметка успешно отредактирована.")
                     break
-                    
-        
+
+        elif command == "Удалить":
+            note_id = int(input("Введите ID заметки для удаления: "))
+            notes = [note for note in notes if note["id"] != note_id]
+            save_notes(notes)
+            print("Заметка успешно удалена.")
+
+        elif command == "Фильтровать":
+            date = input("Введите дату для фильтрации (гггг-мм-дд): ")
+            filtered_notes = filter_notes_by_date(notes, date)
+            print("ID | Заголовок | Тело | Дата и время создания")
+            for note in filtered_notes:
+                print(f'{note["id"]} | {note["title"]} | {note["body"]} | {note["date"]}')
+
+        elif command == "Выход":
+            break
+
+        else:
+            print("Некорректная команда. Попробуйте снова.")
+
+
+if __name__ == "__main__":
+    main()
+
+
